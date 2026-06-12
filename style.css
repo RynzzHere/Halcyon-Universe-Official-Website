@@ -16,6 +16,63 @@ html[lang="zh"]{
 }
 body{background:var(--deep);color:#e8e4d8;overflow-x:hidden;font-family:'Inter',sans-serif}
 
+/* ── Universal Button Focus / Hover Outline ── */
+
+button,
+.btn,
+a.btn,
+.nav-links a,
+.uni-card,
+.comm-card,
+.language-btn,
+.ctrl-btn {
+
+    position: relative;
+    transition: all .25s ease;
+    outline: none;
+}
+
+/* Hover + Focus (mouse + keyboard + gamepad) */
+button:hover,
+.btn:hover,
+a.btn:hover,
+.uni-card:hover,
+.comm-card:hover,
+.language-btn:hover,
+.ctrl-btn:hover,
+
+button:focus-visible,
+.btn:focus-visible,
+a.btn:focus-visible,
+.uni-card:focus-visible,
+.comm-card:focus-visible,
+.language-btn:focus-visible,
+.ctrl-btn:focus-visible {
+
+    box-shadow: 0 0 0 2px rgba(232,169,74,.6),
+                0 0 18px rgba(124,79,208,.35);
+    transform: translateY(-2px);
+}
+
+@media (hover: none) {
+
+    button:active,
+    .btn:active,
+    a.btn:active,
+    .uni-card:active,
+    .comm-card:active {
+
+        transform: scale(0.97);
+        box-shadow: 0 0 0 2px rgba(232,169,74,.4);
+    }
+}
+
+:focus-visible {
+    outline: 2px solid rgba(245, 204, 122, .9);
+    outline-offset: 4px;
+    border-radius: 10px;
+}
+
 /* ── Starfield ── */
 #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
 .s{position:absolute;background:white;border-radius:50%}
