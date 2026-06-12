@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="icon.png">
 </head>
 
 </head>
@@ -17,50 +18,23 @@
 <div id="stars"></div>
 
 <nav>
-    <div class="language-container">
-
-    <button class="language-btn" id="languageBtn">
-        🌐
-    </button>
-
-    <div class="language-dropdown" id="languageDropdown">
-
-        <div onclick="changeLanguage('id')">
-            🇮🇩 Indonesia
-        </div>
-
-        <div onclick="changeLanguage('en')">
-            🇺🇸 English
-        </div>
-
-        <div onclick="changeLanguage('jp')">
-            🇯🇵 日本語
-        </div>
-        <div onclick="changeLanguage('zh')">
-            🇨🇳 简体中文
-        </div>
-
-    </div>
-
-</div>
-</div>
   <div class="logo">HALCYON UNIVERSE</div>
+
   <div class="nav-links">
-    <a href="#projects" data-translate="navUniverses">
-    Universes
-</a>
+    <a href="#projects" data-translate="navUniverses">Universes</a>
+    <a href="#timeline" data-translate="navTimeline">Timeline</a>
+    <a href="#team" data-translate="navTeam">Team</a>
+    <a href="#community" data-translate="navCommunity">Community</a>
+  </div>
 
-<a href="#timeline" data-translate="navTimeline">
-    Timeline
-</a>
-
-<a href="#team" data-translate="navTeam">
-    Team
-</a>
-
-<a href="#community" data-translate="navCommunity">
-    Community
-</a>
+  <div class="language-container">
+    <button class="language-btn" id="languageBtn">🌐 🇺🇸</button>
+    <div class="language-dropdown" id="languageDropdown">
+      <div onclick="changeLanguage('id')">🇮🇩 Indonesia</div>
+      <div onclick="changeLanguage('en')">🇺🇸 English</div>
+      <div onclick="changeLanguage('jp')">🇯🇵 日本語</div>
+      <div onclick="changeLanguage('zh')">🇨🇳 简体中文</div>
+    </div>
   </div>
 </nav>
 
@@ -72,11 +46,11 @@
       <div class="slide-overlay"></div>
     </div>
     <div class="slide slide-2">
-      <div class="slide-label">MYSTERY</div>
+      <div class="uni-card-bg" style="background-image:url('Images/Halcyon-Mystery-Render-Teaser.png');background-size:cover;background-position:center"></div>
       <div class="slide-overlay"></div>
     </div>
     <div class="slide slide-3">
-      <div class="slide-label">DREAM</div>
+      <div class="uni-card-bg" style="background-image:url('Images/CYD-Images.png');background-size:cover;background-position:center"></div>
       <div class="slide-overlay"></div>
     </div>
     <div class="slide slide-4">
@@ -90,9 +64,14 @@
     Stories Beyond Reality
 </p>
 
-<h1 class="hero-title">
-    HALCYON<br>UNIVERSE
-</h1>
+<div class="hero-logo">
+    <img src="Images/H-U raw.png" alt="Halcyon Universe Logo"
+         onerror="this.style.display='none'; document.getElementById('fallbackTitle').style.display='block'">
+
+    <h1 id="fallbackTitle" class="hero-title" style="display:none;">
+        HALCYON<br>UNIVERSE
+    </h1>
+</div>
 
 <p class="hero-sub" data-translate="heroSub">
     Creating immersive roleplay series, original stories,
@@ -128,7 +107,7 @@
     Our Universes
 </h2>
   <div class="universes-grid">
-    <a href="https://youtube.com/@CHANNELMU" target="_blank" class="uni-card card-cyd">
+    <a href="" target="_blank" class="uni-card card-cyd">
       <div class="uni-card-bg" style="background-image:url('Images/CYD-Images.png');background-size:cover;background-position:center"></div>
       <div class="uni-card-body">
         <div class="uni-badge">Active Series</div>
@@ -142,6 +121,14 @@
         <div class="uni-badge">Coming Soon</div>
         <h3>Halcyon Mystery</h3>
         <p>A mysterious world filled with secrets, supernatural powers, and hidden truths lurking beneath the surface.</p>
+      </div>
+    </div>
+    <div class="uni-card card-mystery">
+      <div class="uni-card-bg" style="background-image:url('Images/images.png');background-size:cover;background-position:center"></div>
+      <div class="uni-card-body">
+        <div class="uni-badge">Coming Soon</div>
+        <h3>???</h3>
+        <p>...</p>
       </div>
     </div>
   </div>
@@ -171,7 +158,14 @@
     <div class="tl-item">
       <div class="tl-dot"></div>
       <div class="tl-content">
-        <p class="tl-year">2027</p>
+        <p class="tl-year">2027 — Q1</p>
+        <p>Arc 3 Coming soon</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <p class="tl-year">2028</p>
         <p>Halcyon Mystery enters full development. A new world unfolds.</p>
       </div>
     </div>
@@ -276,6 +270,9 @@
 </div>
 
 <audio id="audioEl" preload="metadata"></audio>
+
+<audio id="sHover" src="Sound/hover.mp3" preload="auto"></audio>
+<audio id="sClick" src="Sound/click.mp3" preload="auto"></audio>
 
 <script src="./function.js"></script>
 </body>
