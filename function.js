@@ -68,34 +68,82 @@ function loadTrack(idx){
     audioEl.volume=parseFloat(volSlider.value);
   }
 }
-function togglePlay(){
-  if(!playlist[trackIdx].src){
-    trackName.textContent='⚠ Tambahkan file audio dulu!';
-    return;
-  }
-  if(playing){
-    audioEl.pause();
-    playBtn.textContent='▶';
-    musicBtn.classList.remove('playing');
-    musicBtn.textContent='🎵';
-    playing=false;
-  } else {
-    audioEl.play().catch(()=>{});
-    playBtn.textContent='⏸';
-    musicBtn.classList.add('playing');
-    musicBtn.textContent='🎶';
-    playing=true;
-  }
+let fadeInterval;
+
+function fadeVolume(target, callback){
+
+    clearInterval(fadeInterval);
+
+    fadeInterval = setInterval(() => {
+
+        if(target > audioEl.volume){
+            audioEl.volume = Math.min(audioEl.volume + 0.05, target);
+        } else {
+            audioEl.volume = Math.max(audioEl.volume - 0.05, target);
+        }
+
+        if(audioEl.volume === target){
+            clearInterval(fadeInterval);
+            if(callback) callback();
+        }
+
+    }, 50);
 }
+
+function togglePlay(){
+
+    if(!playlist[trackIdx].src){
+        trackName.textContent='⚠ Tambahkan file audio dulu!';
+        return;
+    }
+
+    if(playing){
+
+        // FADE OUT lalu pause
+        fadeVolume(0, () => {
+            audioEl.pause();
+        });
+
+        playBtn.textContent='▶';
+        musicBtn.classList.remove('playing');
+        musicBtn.textContent='🎵';
+        playing=false;
+
+    } else {
+
+        audioEl.play().then(() => {
+
+            audioEl.volume = 0;
+            fadeVolume(parseFloat(volSlider.value));
+
+        }).catch(()=>{});
+
+        playBtn.textContent='⏸';
+        musicBtn.classList.add('playing');
+        musicBtn.textContent='🎶';
+        playing=true;
+    }
+}
+
 function prevTrack(){
-  trackIdx=(trackIdx-1+playlist.length)%playlist.length;
-  loadTrack(trackIdx);
-  if(playing){audioEl.play().catch(()=>{})}
+
+    fadeVolume(0, () => {
+        trackIdx=(trackIdx-1+playlist.length)%playlist.length;
+        loadTrack(trackIdx);
+        audioEl.play().catch(()=>{});
+        fadeVolume(parseFloat(volSlider.value));
+    });
+
 }
 function nextTrack(){
-  trackIdx=(trackIdx+1)%playlist.length;
-  loadTrack(trackIdx);
-  if(playing){audioEl.play().catch(()=>{})}
+
+    fadeVolume(0, () => {
+        trackIdx=(trackIdx+1)%playlist.length;
+        loadTrack(trackIdx);
+        audioEl.play().catch(()=>{});
+        fadeVolume(parseFloat(volSlider.value));
+    });
+
 }
 
 playBtn.addEventListener('click',togglePlay);
@@ -139,6 +187,48 @@ document.addEventListener("click",(e)=>{
     }
 
 });
+
+/* ── UI Sound System ── */
+
+const sHover = document.getElementById("sHover");
+const sClick = document.getElementById("sClick");
+
+let soundEnabled = true;
+
+/* helper biar gak overlap rusak */
+function playSound(sound){
+
+    if(!soundEnabled) return;
+
+    sound.currentTime = 0;
+    sound.volume = 0.5;
+
+    sound.play().catch(()=>{});
+}
+
+const hoverTargets = document.querySelectorAll(
+    "button, .btn, a.btn, .uni-card, .comm-card, .language-btn, .ctrl-btn, .nav-links a"
+);
+
+hoverTargets.forEach(el => {
+    el.addEventListener("mouseenter", () => {
+        playSound(sHover);
+    });
+});
+
+const clickTargets = document.querySelectorAll(
+    "nav, button, .btn, a.btn, .language-dropdown div"
+);
+
+clickTargets.forEach(el => {
+    el.addEventListener("click", () => {
+        playSound(sClick);
+    });
+});
+
+function toggleSound(){
+    soundEnabled = !soundEnabled;
+}
 
 /* ── Translation System ── */
 
@@ -232,26 +322,14 @@ const translations = {
 
 function changeLanguage(lang){
 
-    localStorage.setItem(
-        "language",
-        lang
-    );
+    localStorage.setItem("language", lang);
 
-    document
-    .querySelectorAll("[data-translate]")
-    .forEach(element => {
-
-        const key =
-        element.dataset.translate;
-
-        if(
-            translations[lang] &&
-            translations[lang][key]
-        ){
-            element.textContent =
-            translations[lang][key];
+    document.querySelectorAll("[data-translate]")
+    .forEach(el=>{
+        const key = el.dataset.translate;
+        if(translations[lang][key]){
+            el.textContent = translations[lang][key];
         }
-
     });
 
     const names = {
@@ -259,13 +337,33 @@ function changeLanguage(lang){
         en:"🇺🇸",
         jp:"🇯🇵",
         zh:"🇨🇳"
-
     };
 
-    languageBtn.textContent =
-    "🌐 " + names[lang];
+    languageBtn.textContent = "🌐 " + names[lang];
 
-    languageDropdown.classList.remove("show");
+    updateLangHighlight(lang);
+
+    // ── HIGHLIGHT EFFECT ──
+    languageBtn.classList.add("active-lang","pulse");
+
+    setTimeout(()=>{
+        languageBtn.classList.remove("pulse");
+    },600);
+    
+
+    // remove active from others (optional clean state)
+}
+
+function updateLangHighlight(lang){
+
+    languageBtn.classList.remove(
+        "active-lang"
+    );
+
+    void languageBtn.offsetWidth; // reset animation trick
+
+    languageBtn.classList.add("active-lang");
+
 }
 
 function detectLanguage(){
