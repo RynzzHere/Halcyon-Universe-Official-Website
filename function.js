@@ -55,8 +55,8 @@ const progressBar=document.getElementById('progressBar');
 */
 const playlist=[
   {title:"Step Your Feet - Chase Your Dream Lofi Version", src:"Music/Step Your Feet - Chase Your Dream Lofi Version.mp3"},
-  {title:"Halcyon: Chase Your Dream Opening Remix Song", src:"Music/HCYD Opening song fan made 2.mp3"},
-  {title:"Atmospheric Theme 3", src:""},
+  {title:"Halcyon: Chase Your Dream Opening Song", src:"Music/HCYD Opening song fan made 2.mp3"},
+  {title:"Menggapai Mentari Credit Scene", src:"Music/HCD Credit Song.mp3"},
 ];
 let trackIdx=0,playing=false;
 
@@ -121,3 +121,163 @@ progressBar.addEventListener('click',(e)=>{
 });
 
 loadTrack(0);
+
+/* ── Language Button ── */
+languageBtn.addEventListener("click",()=>{
+
+    languageDropdown.classList.toggle("show");
+
+});
+
+document.addEventListener("click",(e)=>{
+
+    if(
+        !languageBtn.contains(e.target) &&
+        !languageDropdown.contains(e.target)
+    ){
+        languageDropdown.classList.remove("show");
+    }
+
+});
+
+/* ── Translation System ── */
+
+const translations = {
+
+    id: {
+
+        heroEyebrow: "Cerita Melampaui Realita",
+
+        heroSub:
+        "Menciptakan serial roleplay, cerita original, game, dan dunia yang tak terlupakan.",
+
+        exploreBtn: "Jelajahi Universe",
+        communityBtn: "Gabung Komunitas",
+
+        navUniverses: "Universe",
+        navTimeline: "Timeline",
+        navTeam: "Tim",
+        navCommunity: "Komunitas",
+
+        ourUniverses: "Universe Kami",
+        timeline: "Timeline",
+        ourTeam: "Tim Kami",
+        community: "Komunitas"
+    },
+
+    en: {
+
+        heroEyebrow: "Stories Beyond Reality",
+
+        heroSub:
+        "Creating immersive roleplay series, original stories, games, and unforgettable worlds.",
+
+        exploreBtn: "Explore Universe",
+        communityBtn: "Join Community",
+
+        navUniverses: "Universes",
+        navTimeline: "Timeline",
+        navTeam: "Team",
+        navCommunity: "Community",
+
+        ourUniverses: "Our Universes",
+        timeline: "Timeline",
+        ourTeam: "Our Team",
+        community: "Community"
+    },
+
+    jp: {
+
+        heroEyebrow: "現実を超えた物語",
+
+        heroSub:
+        "没入感のあるロールプレイシリーズ、オリジナルストーリー、ゲーム、そして忘れられない世界を創造します。",
+
+        exploreBtn: "ユニバースを見る",
+        communityBtn: "コミュニティに参加",
+
+        navUniverses: "ユニバース",
+        navTimeline: "タイムライン",
+        navTeam: "チーム",
+        navCommunity: "コミュニティ",
+
+        ourUniverses: "私たちの世界",
+        timeline: "タイムライン",
+        ourTeam: "チーム",
+        community: "コミュニティ"
+    },
+    zh: {
+
+    heroEyebrow: "超越现实的故事",
+
+    heroSub:
+    "打造沉浸式角色扮演系列、原创故事、游戏以及令人难忘的世界。",
+
+    exploreBtn: "探索宇宙",
+    communityBtn: "加入社区",
+
+    navUniverses: "宇宙",
+    navTimeline: "时间线",
+    navTeam: "团队",
+    navCommunity: "社区",
+
+    ourUniverses: "我们的宇宙",
+    timeline: "时间线",
+    ourTeam: "我们的团队",
+    community: "社区"
+
+}
+
+};
+
+function changeLanguage(lang){
+
+    localStorage.setItem(
+        "language",
+        lang
+    );
+
+    document
+    .querySelectorAll("[data-translate]")
+    .forEach(element => {
+
+        const key =
+        element.dataset.translate;
+
+        if(
+            translations[lang] &&
+            translations[lang][key]
+        ){
+            element.textContent =
+            translations[lang][key];
+        }
+
+    });
+
+    const names = {
+        id:"🇮🇩",
+        en:"🇺🇸",
+        jp:"🇯🇵",
+        zh:"🇨🇳"
+
+    };
+
+    languageBtn.textContent =
+    "🌐 " + names[lang];
+
+    languageDropdown.classList.remove("show");
+}
+
+function detectLanguage(){
+
+    const lang =
+    navigator.language.toLowerCase();
+
+    if(lang.startsWith("id"))
+        return "id";
+
+    if(lang.startsWith("ja"))
+        return "jp";
+
+    return "en";
+}
