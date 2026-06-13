@@ -18,6 +18,12 @@ const st=document.createElement('style');
 st.textContent='@keyframes twinkle{from{opacity:.05}to{opacity:.75}}';
 document.head.appendChild(st);
 
+fetch("https://api.countapi.xyz/hit/halcyon-universe/main")
+.then(res => res.json())
+.then(data => {
+    document.getElementById("visitorCount").textContent = data.value;
+});
+
 /* ── Slideshow ── */
 const slides=document.querySelectorAll('.slide');
 const dots=document.querySelectorAll('.dot');
