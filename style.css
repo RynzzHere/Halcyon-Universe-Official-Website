@@ -102,6 +102,26 @@ a.btn:focus-visible, .uni-card:focus-visible,
   }
 }
 
+.visitor-box{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+
+    padding:10px 14px;
+    border-radius:12px;
+
+    background:rgba(13,16,33,.7);
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    color:#f5cc7a;
+    font-size:.85rem;
+    letter-spacing:.05em;
+
+    box-shadow:0 0 20px rgba(124,79,208,.15);
+}
+
 /* ── Starfield ── */
 #stars { position:fixed; inset:0; z-index:0; pointer-events:none }
 .s { position:absolute; background:white; border-radius:50% }
