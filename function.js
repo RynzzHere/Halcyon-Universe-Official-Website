@@ -379,3 +379,41 @@ function detectLanguage(){
 
     return "en";
 }
+
+const pt = document.getElementById("pageTransition");
+const ptText = document.getElementById("ptText");
+
+const loadingTexts = [
+    "Initializing world...",
+    "Loading universes...",
+    "Syncing timeline...",
+    "Preparing story engine...",
+    "Welcome to Halcyon..."
+];
+
+let i = 0;
+
+const textInterval = setInterval(() => {
+
+    i++;
+
+    if(i < loadingTexts.length){
+        ptText.textContent = loadingTexts[i];
+    }
+
+}, 500);
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        clearInterval(textInterval);
+
+        ptText.textContent = "Ready.";
+
+        setTimeout(() => {
+            pt.classList.add("hide");
+        }, 600);
+
+    }, 2200);
+});
