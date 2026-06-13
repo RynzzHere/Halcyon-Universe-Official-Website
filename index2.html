@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maintenance - Halcyon Universe</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#090b14;
+    color:white;
+    font-family:Inter, sans-serif;
+    overflow:hidden;
+}
+
+/* glow background */
+.bg{
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at center, rgba(124,79,208,.25), transparent 60%),
+        radial-gradient(circle at 30% 70%, rgba(232,169,74,.15), transparent 55%);
+    animation:glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes glow{
+    from{filter:blur(20px);}
+    to{filter:blur(40px);}
+}
+
+/* container */
+.box{
+    position:relative;
+    text-align:center;
+    z-index:2;
+}
+
+/* logo */
+.logo{
+    width:clamp(140px, 30vw, 300px);
+    margin-bottom:20px;
+    filter:drop-shadow(0 0 25px rgba(232,169,74,.3));
+}
+
+/* title */
+h1{
+    font-family:Cinzel, serif;
+    letter-spacing:.2em;
+    color:#f5cc7a;
+    margin-bottom:10px;
+}
+
+/* text */
+p{
+    color:rgba(255,255,255,.6);
+    font-size:.9rem;
+}
+
+/* loader */
+.bar{
+    width:min(400px,80vw);
+    height:5px;
+    background:rgba(255,255,255,.1);
+    border-radius:5px;
+    overflow:hidden;
+    margin:25px auto 0;
+}
+
+.fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#e8a94a,#7c4fd0);
+    animation:load 2.5s infinite;
+}
+
+@keyframes load{
+    0%{width:0%;}
+    50%{width:100%;}
+    100%{width:0%;}
+}
+
+/* status dot */
+.dot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#e8a94a;
+    margin-left:6px;
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+    0%{opacity:1;transform:scale(1);}
+    50%{opacity:.3;transform:scale(1.6);}
+    100%{opacity:1;transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="box">
+
+    <img class="logo" src="Images/logo.png" alt="Logo">
+
+    <h1>MAINTENANCE</h1>
+
+    <p>Halcyon Universe is temporarily offline<span class="dot"></span></p>
+
+    <div class="bar">
+        <div class="fill"></div>
+    </div>
+
+    <p style="margin-top:15px;opacity:.4;">
+        Please come back later
+    </p>
+
+</div>
+
+</body>
+</html>
