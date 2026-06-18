@@ -105,6 +105,10 @@ p{
 
 <body>
 
+   <audio id="bgMusic" autoplay loop muted>
+    <source src="Music/maintenance.mp3" type="audio/mpeg">
+</audio>
+
 <div class="bg"></div>
 
 <div class="box">
@@ -124,6 +128,15 @@ p{
     </p>
 
 </div>
+
+    <script>
+    const music = document.getElementById("bgMusic");
+
+window.addEventListener("load", () => {
+    music.muted = false;
+    music.play().catch(() => {});
+});
+    </script>
 
 </body>
 </html>
