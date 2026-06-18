@@ -105,8 +105,10 @@ p{
 
 <body>
 
-   <audio id="bgMusic" autoplay loop muted>
-    <source src="Music/saturn-3-music-claire-de-lune-debussy-piano-411227.mp3" type="audio/mpeg">
+<div id="musicBtn">🎵 Enable Music</div>
+
+<audio id="bgMusic" loop>
+    <source src="Music/saturn-3-music-claire-de-lune-debussy-piano-411227.mp3 type="audio/mpeg">
 </audio>
 
 <div class="bg"></div>
@@ -129,14 +131,30 @@ p{
 
 </div>
 
-    <script>
-    const music = document.getElementById("bgMusic");
+<script>
+const music = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
 
-window.addEventListener("load", () => {
-    music.muted = false;
-    music.play().catch(() => {});
+btn.addEventListener("click", async () => {
+    try{
+        music.volume = 0;
+        await music.play();
+
+        let fade = setInterval(() => {
+            if(music.volume < 0.3){
+                music.volume += 0.02;
+            } else {
+                clearInterval(fade);
+            }
+        }, 100);
+
+        btn.style.display = "none";
+    }
+    catch(err){
+        console.log(err);
+    }
 });
-    </script>
+</script>
 
 </body>
 </html>
