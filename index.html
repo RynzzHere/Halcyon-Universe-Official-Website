@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maintenance - Halcyon Universe</title>
-
 <style>
 body{
     margin:0;
@@ -17,34 +16,6 @@ body{
     font-family:Inter, sans-serif;
     overflow:hidden;
 }
-
-#musicBtn{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-
-    z-index:9999;
-
-    padding:10px 18px;
-    border-radius:12px;
-
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.1);
-
-    backdrop-filter:blur(10px);
-
-    color:#f5cc7a;
-    cursor:pointer;
-
-    transition:.3s;
-}
-
-#musicBtn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 0 20px rgba(232,169,74,.25);
-}
-
-/* glow background */
 .bg{
     position:absolute;
     inset:0;
@@ -53,41 +24,30 @@ body{
         radial-gradient(circle at 30% 70%, rgba(232,169,74,.15), transparent 55%);
     animation:glow 4s ease-in-out infinite alternate;
 }
-
 @keyframes glow{
     from{filter:blur(20px);}
     to{filter:blur(40px);}
 }
-
-/* container */
 .box{
     position:relative;
     text-align:center;
     z-index:2;
 }
-
-/* logo */
 .logo{
     width:clamp(140px, 30vw, 300px);
     margin-bottom:20px;
     filter:drop-shadow(0 0 25px rgba(232,169,74,.3));
 }
-
-/* title */
 h1{
     font-family:Cinzel, serif;
     letter-spacing:.2em;
     color:#f5cc7a;
     margin-bottom:10px;
 }
-
-/* text */
 p{
     color:rgba(255,255,255,.6);
     font-size:.9rem;
 }
-
-/* loader */
 .bar{
     width:min(400px,80vw);
     height:5px;
@@ -96,21 +56,17 @@ p{
     overflow:hidden;
     margin:25px auto 0;
 }
-
 .fill{
     height:100%;
     width:0%;
     background:linear-gradient(90deg,#e8a94a,#7c4fd0);
     animation:load 2.5s infinite;
 }
-
 @keyframes load{
     0%{width:0%;}
     50%{width:100%;}
     100%{width:0%;}
 }
-
-/* status dot */
 .dot{
     display:inline-block;
     width:8px;
@@ -120,7 +76,6 @@ p{
     margin-left:6px;
     animation:pulse 1s infinite;
 }
-
 @keyframes pulse{
     0%{opacity:1;transform:scale(1);}
     50%{opacity:.3;transform:scale(1.6);}
@@ -128,59 +83,61 @@ p{
 }
 </style>
 </head>
-
 <body>
-
-<div id="musicBtn">🎵 Enable Music</div>
 
 <audio id="bgMusic" loop>
     <source src="Music/saturn-3-music-claire-de-lune-debussy-piano-411227.mp3" type="audio/mpeg">
 </audio>
 
 <div class="bg"></div>
-
 <div class="box">
-
     <img class="logo" src="Images/logo.png" alt="Logo">
-
     <h1>MAINTENANCE</h1>
-
     <p>Halcyon Universe is temporarily offline<span class="dot"></span></p>
-
     <div class="bar">
         <div class="fill"></div>
     </div>
-
-    <p style="margin-top:15px;opacity:.4;">
-        Please come back later
-    </p>
-
+    <p style="margin-top:15px;opacity:.4;">Please come back later</p>
 </div>
 
 <script>
 const music = document.getElementById("bgMusic");
-const btn = document.getElementById("musicBtn");
+music.volume = 0;
 
-btn.addEventListener("click", async () => {
-    try{
-        music.volume = 0;
-        await music.play();
-
+function tryPlay() {
+    music.play().then(() => {
+        // Fade in setelah berhasil play
         let fade = setInterval(() => {
-            if(music.volume < 0.3){
-                music.volume += 0.02;
+            if (music.volume < 0.3) {
+                music.volume = Math.min(music.volume + 0.02, 0.3);
             } else {
                 clearInterval(fade);
             }
         }, 100);
+    }).catch(() => {
+        // Browser blokir autoplay — tunggu interaksi pertama user lalu coba lagi
+        const unlock = () => {
+            music.play().then(() => {
+                let fade = setInterval(() => {
+                    if (music.volume < 0.3) {
+                        music.volume = Math.min(music.volume + 0.02, 0.3);
+                    } else {
+                        clearInterval(fade);
+                    }
+                }, 100);
+            });
+            document.removeEventListener("click",    unlock);
+            document.removeEventListener("keydown",  unlock);
+            document.removeEventListener("touchstart", unlock);
+        };
+        document.addEventListener("click",     unlock, { once: true });
+        document.addEventListener("keydown",   unlock, { once: true });
+        document.addEventListener("touchstart", unlock, { once: true });
+    });
+}
 
-        btn.style.display = "none";
-    }
-    catch(err){
-        console.log(err);
-    }
-});
+// Coba autoplay langsung saat halaman load
+window.addEventListener("load", tryPlay);
 </script>
-
 </body>
 </html>
