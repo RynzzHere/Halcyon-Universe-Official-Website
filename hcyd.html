@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halcyon: Chase Your Dream — MC Server</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="Images/logo-no-bg.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#f5c542;--gold-dark:#7a5f00;
+  --green:#3dbb3d;--green-dark:#1a6b1a;
+  --red:#c0392b;--panel:#2d2d2d;--panel-l:#3d3d3d;
+  --night:#1a1a2e;--w:#f0f0f0;
+  --fs-base:clamp(14px,2.2vw,18px);
+  --fs-sm:clamp(12px,1.8vw,15px);
+  --fs-lg:clamp(18px,3vw,24px);
+  --fs-xl:clamp(24px,5vw,40px);
+  --pad:clamp(10px,3vw,20px);
+  --gap:clamp(6px,1.5vw,12px);
+}
+html{scroll-behavior:smooth}
+body{font-family:'VT323',monospace;background:var(--night);color:var(--w);font-size:var(--fs-base);line-height:1.5;overflow-x:hidden}
+
+.mc-bx{border:3px solid #000;box-shadow:inset 0 0 0 2px rgba(255,255,255,.13),3px 3px 0 #000;background:var(--panel)}
+.mc-bx-l{border:3px solid #000;box-shadow:inset 0 0 0 2px rgba(255,255,255,.18),3px 3px 0 #000;background:var(--panel-l)}
+
+/* ── Header ── */
+header{background:#0d1117;border-bottom:4px solid #000;position:relative;overflow:hidden}
+.stars-bg{position:absolute;inset:0;background-image:
+  radial-gradient(1px 1px at 12% 25%,#fff,transparent),
+  radial-gradient(1px 1px at 35% 65%,#fff,transparent),
+  radial-gradient(1px 1px at 62% 12%,#fff,transparent),
+  radial-gradient(1px 1px at 82% 42%,#fff,transparent),
+  radial-gradient(1px 1px at 90% 78%,#fff,transparent),
+  radial-gradient(1px 1px at 48% 88%,rgba(255,255,255,.5),transparent),
+  radial-gradient(1px 1px at 20% 50%,rgba(255,255,255,.4),transparent)}
+.hdr-inner{position:relative;z-index:2;text-align:center;padding:clamp(1.2rem,4vw,2.5rem) var(--pad) clamp(.8rem,2.5vw,1.5rem)}
+.hdr-title{font-size:var(--fs-xl);color:var(--gold);text-shadow:3px 3px 0 var(--gold-dark),6px 6px 0 #000;letter-spacing:2px;line-height:1.1}
+.hdr-sub{font-size:var(--fs-lg);color:#a0d060;text-shadow:2px 2px 0 #2a5000,4px 4px 0 #000;margin-top:4px}
+.badges{display:flex;gap:var(--gap);justify-content:center;flex-wrap:wrap;margin-top:12px}
+.bdg{padding:2px clamp(8px,1.5vw,14px);border:2px solid #000;box-shadow:2px 2px 0 #000;font-size:var(--fs-sm);letter-spacing:1px}
+.bdg-g{background:#1a5c1a;color:#6dff6d}
+.bdg-y{background:#5c4c00;color:#ffd700}
+.bdg-b{background:#003366;color:#66aaff}
+.grass{height:clamp(8px,1.5vw,14px);background:repeating-linear-gradient(90deg,#5a8a20 0,#5a8a20 16px,#3d6b10 16px,#3d6b10 32px);border-top:3px solid #000;border-bottom:3px solid #000}
+
+/* ── Main ── */
+main{max-width:1200px;margin:0 auto;padding:clamp(.8rem,2.5vw,1.5rem) var(--pad) clamp(1.5rem,4vw,3rem);display:flex;flex-direction:column;gap:clamp(.8rem,2vw,1.5rem)}
+
+.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:clamp(8px,1.5vw,14px)}
+.blk-ico{width:clamp(20px,3vw,28px);height:clamp(20px,3vw,28px);flex-shrink:0;border:2px solid #000;box-shadow:2px 2px 0 #000}
+.sec-ttl{font-size:clamp(16px,3vw,22px);color:var(--gold);text-shadow:2px 2px 0 var(--gold-dark);letter-spacing:1px}
+
+.panel{padding:clamp(.8rem,2.5vw,1.2rem) clamp(.8rem,2.5vw,1.4rem)}
+.panel p{font-size:var(--fs-sm);color:#ddd;line-height:1.6;margin-bottom:6px}
+.panel p:last-child{margin-bottom:0}
+.hl{color:#a0d060;font-size:var(--fs-base)}
+
+/* ── Status ── */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(130px,22vw,180px),1fr));gap:var(--gap)}
+.st-item{display:flex;align-items:center;gap:7px;padding:clamp(4px,1vw,7px) clamp(8px,1.5vw,12px);background:rgba(0,0,0,.3);border:2px solid #444;box-shadow:2px 2px 0 #000;font-size:var(--fs-sm)}
+.st-dot{font-size:clamp(11px,1.8vw,14px);flex-shrink:0}
+
+/* ── Rules ── */
+.rules-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:var(--gap)}
+.rpanel{padding:clamp(.7rem,2vw,1rem) clamp(.8rem,2vw,1.2rem)}
+.rpanel h4{color:#f0a030;font-size:clamp(14px,2.2vw,18px);margin-bottom:8px;border-bottom:2px solid #444;padding-bottom:5px;text-shadow:1px 1px 0 #7a5000}
+.rule{display:flex;gap:7px;padding:3px 0;font-size:var(--fs-sm);color:#ccc;border-bottom:1px solid rgba(255,255,255,.06)}
+.rule:last-child{border-bottom:none}
+.rule .blt{color:var(--red);flex-shrink:0}
+.rule.warn .blt{color:#ff6060}
+.rule.warn{color:#ffaaaa}
+
+/* ── Features ── */
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(90px,15vw,130px),1fr));gap:var(--gap)}
+.ft{padding:clamp(7px,1.5vw,10px) clamp(5px,1vw,8px);text-align:center;background:rgba(0,0,0,.35);border:2px solid #444;box-shadow:2px 2px 0 #000;font-size:var(--fs-sm);color:#a0d060;transition:background .15s}
+.ft:hover{background:rgba(90,138,32,.2)}
+.ft-ico{font-size:clamp(20px,3.5vw,28px);display:block;margin-bottom:3px}
+
+/* ── Team ── */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:var(--gap)}
+.tm{display:flex;align-items:center;gap:8px;padding:clamp(6px,1.2vw,8px) clamp(8px,1.5vw,12px);background:rgba(0,0,0,.3);border:2px solid #444;box-shadow:2px 2px 0 #000}
+.ph{width:clamp(24px,4vw,32px);height:clamp(24px,4vw,32px);border:2px solid #000;box-shadow:1px 1px 0 #000;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:clamp(12px,2vw,17px);border-radius:2px}
+.tm-name{color:var(--gold);font-size:clamp(13px,2vw,16px);text-shadow:1px 1px 0 var(--gold-dark)}
+.tm-role{color:#888;font-size:clamp(11px,1.5vw,13px);margin-top:1px}
+
+/* ── Mods ── */
+.mods-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:var(--gap)}
+.mpanel{padding:clamp(.7rem,2vw,1rem) clamp(.8rem,2vw,1.2rem)}
+.mpanel h4{font-size:clamp(14px,2.2vw,18px);margin-bottom:8px;border-bottom:2px solid #444;padding-bottom:5px}
+.mod{display:flex;align-items:flex-start;gap:7px;padding:4px 0;font-size:var(--fs-sm);color:#ccc;border-bottom:1px solid rgba(255,255,255,.05)}
+.mod:last-child{border-bottom:none}
+.mblt{color:var(--green);flex-shrink:0}
+.mlink{color:#66aaff;text-decoration:none;font-size:clamp(10px,1.5vw,13px);display:block;margin-top:2px;word-break:break-all}
+.mlink:hover{color:#aaccff;text-decoration:underline}
+
+/* ── Inspired ── */
+.insp{display:flex;flex-wrap:wrap;gap:8px;padding:clamp(.7rem,2vw,1rem) clamp(.8rem,2vw,1.2rem)}
+.itag{padding:3px clamp(10px,2vw,16px);background:rgba(60,40,10,.6);border:2px solid #7a5000;box-shadow:2px 2px 0 #000;color:#f0c060;font-size:var(--fs-sm)}
+
+/* ── SP Warning ── */
+.sp-panel{padding:clamp(.8rem,2vw,1rem) clamp(.8rem,2vw,1.2rem);background:rgba(60,0,0,.4);border:3px solid #800;box-shadow:inset 0 0 0 2px rgba(255,0,0,.1),3px 3px 0 #000}
+.sp-ttl{color:#ff6060;font-size:clamp(16px,2.5vw,20px);text-shadow:2px 2px 0 #600;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.sp-panel p{color:#ffaaaa;font-size:var(--fs-sm)}
+
+/* ── Join CTA ── */
+.join-panel{padding:clamp(1rem,3vw,1.4rem);text-align:center;background:rgba(0,30,60,.5);border:3px solid #1a5a9a;box-shadow:inset 0 0 0 2px rgba(100,160,255,.1),3px 3px 0 #000}
+.join-panel h3{color:var(--gold);font-size:clamp(18px,4vw,28px);text-shadow:2px 2px 0 var(--gold-dark);margin-bottom:10px}
+.join-info{display:flex;flex-wrap:wrap;gap:var(--gap);justify-content:center;margin-top:10px}
+.ic{padding:clamp(5px,1.2vw,8px) clamp(12px,2.5vw,18px);background:rgba(0,0,0,.4);border:2px solid #444;box-shadow:2px 2px 0 #000;font-size:var(--fs-sm)}
+.ic .lbl{color:#888;font-size:clamp(10px,1.5vw,13px);display:block}
+.ic .val{color:#a0d060}
+.mc-btn{display:inline-block;margin-top:12px;padding:clamp(7px,1.5vw,10px) clamp(18px,4vw,28px);background:#3a7a20;border:3px solid #000;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),3px 3px 0 #000;color:#fff;font-family:'VT323',monospace;font-size:clamp(16px,2.5vw,20px);cursor:pointer;text-decoration:none;letter-spacing:1px;transition:background .1s,transform .1s}
+.mc-btn:hover{background:#4a9a28;transform:translate(-1px,-1px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.3),4px 4px 0 #000}
+.mc-btn:active{transform:translate(1px,1px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.15),2px 2px 0 #000}
+
+/* ── Footer ── */
+.dirt{height:clamp(12px,2vw,20px);background:repeating-linear-gradient(90deg,#866043 0,#866043 16px,#6b4c1e 16px,#6b4c1e 32px);border-top:3px solid #000}
+footer{text-align:center;padding:clamp(.6rem,2vw,1rem);color:#555;font-size:var(--fs-sm);border-top:3px solid #222}
+</style>
+</head>
+<body>
+
+<div style="padding:clamp(6px,1.5vw,10px) clamp(10px,3vw,20px);background:#0d1117;border-bottom:2px solid #000;position:sticky;top:0;z-index:999">
+  <a href="index.html" id="backBtn" style="display:inline-flex;align-items:center;gap:6px;font-family:'VT323',monospace;font-size:clamp(14px,2.5vw,18px);color:#a0d060;text-decoration:none;padding:4px 14px;background:rgba(0,0,0,.4);border:2px solid #3d6b10;box-shadow:2px 2px 0 #000;letter-spacing:1px">&#9664; Kembali</a>
+</div>
+
+<header>
+  <div class="stars-bg"></div>
+  <div class="hdr-inner">
+    <div class="hdr-title">⚔ HALCYON ⚔</div>
+    <div class="hdr-sub">Chase Your Dream — Minecraft Roleplay</div>
+    <div class="badges">
+      <span class="bdg bdg-g">☕ JAVA ONLY</span>
+      <span class="bdg bdg-y">🎭 ROLEPLAY</span>
+      <span class="bdg bdg-b">📖 v1.20.1</span>
+    </div>
+  </div>
+  <div class="grass"></div>
+</header>
+
+<main>
+
+  <!-- Welcome -->
+  <div class="mc-bx panel">
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#3d6b10"></div>
+      <span class="sec-ttl">Selamat Datang!</span>
+    </div>
+    <p class="hl">Halo Para Minecraft Player Sekalian! 🥳</p>
+    <p>Kalian sekarang berada di <b style="color:#ffd700">server Halcyon: Chase Your Dream</b> — Minecraft Roleplay Server terinspirasi dari game <b style="color:#a0d060">TroubleMaker</b> buatan Gamecom.</p>
+    <p style="margin-top:6px;color:#f0c060">Genre: Comedy · Shounen · Action · School · Romance</p>
+  </div>
+
+  <!-- Status -->
+  <div class="mc-bx panel">
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#1a6b1a"></div>
+      <span class="sec-ttl">Status Server</span>
+    </div>
+    <div class="status-grid">
+      <div class="st-item"><span class="st-dot">🟢</span>Online</div>
+      <div class="st-item"><span class="st-dot">🔴</span>Offline</div>
+      <div class="st-item"><span class="st-dot">🟡</span>Maintenance</div>
+      <div class="st-item"><span class="st-dot">🔵</span>Off Sementara</div>
+      <div class="st-item"><span class="st-dot">⚪</span>Libur Roleplay</div>
+      <div class="st-item"><span class="st-dot">⚫</span>Graduate</div>
+      <div class="st-item"><span class="st-dot">❌</span>BUBAR</div>
+      <div class="st-item"><span class="st-dot">📜</span>Sedang Roleplay</div>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div>
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#7b241c"></div>
+      <span class="sec-ttl">Rules</span>
+    </div>
+    <div class="rules-cols">
+      <div class="mc-bx rpanel">
+        <h4>📋 Aturan Umum</h4>
+        <div class="rule"><span class="blt">✗</span>No Spam chat</div>
+        <div class="rule"><span class="blt">✗</span>No Virtex</div>
+        <div class="rule"><span class="blt">✗</span>No Spam Stiker</div>
+        <div class="rule"><span class="blt">✗</span>No Baper</div>
+        <div class="rule"><span class="blt">✗</span>No Stiker Abuse / Aneh</div>
+        <div class="rule"><span class="blt">✗</span>No Konten 18+</div>
+        <div class="rule"><span class="blt">✗</span>No Grief / Rusakin Prop</div>
+        <div class="rule"><span class="blt">✗</span>Dilarang Pancing Drama</div>
+        <div class="rule"><span class="blt">✗</span>No Promosi Server Lain</div>
+        <div class="rule warn"><span class="blt">⚠</span>STOP SPAM AI</div>
+        <div class="rule warn"><span class="blt">⚠</span>STOP NGEKARBIT</div>
+      </div>
+      <div class="mc-bx rpanel">
+        <h4>🎭 Rules Saat Roleplay</h4>
+        <div class="rule"><span class="blt">✗</span>Dilarang warp saat RP — pakai HP</div>
+        <div class="rule"><span class="blt">✗</span>Owner/Admin WAJIB DEOP saat RP</div>
+        <div class="rule"><span class="blt">✗</span>Dilarang OOC (sewajarnya)</div>
+        <div class="rule"><span class="blt">✗</span>Dilarang Grief</div>
+        <div class="rule warn"><span class="blt">⚠</span>DILARANG Fighting Style saat RP Senjata Api</div>
+        <div class="rule warn"><span class="blt">⚠</span>JANGAN RUSUH</div>
+        <div class="rule warn"><span class="blt">⚠</span>DILARANG Berantem Tanpa Alasan Jelas</div>
+        <div class="rule"><span class="blt">✗</span>Dilarang RpGun Tanpa Dialog</div>
+        <div class="rule"><span class="blt">✗</span>RpGun kalo knock — mic matiin</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="mc-bx panel">
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#b8860b"></div>
+      <span class="sec-ttl">Fitur Server</span>
+    </div>
+    <div class="feats">
+      <div class="ft"><span class="ft-ico">🏧</span>ATM</div>
+      <div class="ft"><span class="ft-ico">🪑</span>Sit</div>
+      <div class="ft"><span class="ft-ico">💤</span>Knock</div>
+      <div class="ft"><span class="ft-ico">🛋️</span>Furniture</div>
+      <div class="ft"><span class="ft-ico">🚗</span>Vehicle</div>
+      <div class="ft"><span class="ft-ico">🤝</span>Carry Player</div>
+      <div class="ft"><span class="ft-ico">🎙️</span>Voice Chat</div>
+      <div class="ft"><span class="ft-ico">🥊</span>Combat Style</div>
+      <div class="ft"><span class="ft-ico">💃</span>Emote</div>
+      <div class="ft"><span class="ft-ico">✨</span>Dan Lainnya</div>
+    </div>
+  </div>
+
+  <!-- Team -->
+  <div class="mc-bx panel">
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#1a5a9a"></div>
+      <span class="sec-ttl">Tim Staff</span>
+    </div>
+    <div class="team-grid">
+      <div class="tm"><div class="ph" style="background:#2d5a1a">🌿</div><div><div class="tm-name">Ryuu</div><div class="tm-role">Founder · Scripter · Server Mgmt</div></div></div>
+      <div class="tm"><div class="ph" style="background:#1a3a6a">💻</div><div><div class="tm-name">Rizz</div><div class="tm-role">Owner · Programmer Supervisor</div></div></div>
+      <div class="tm"><div class="ph" style="background:#4a2a0a">⚙️</div><div><div class="tm-name">Paymon</div><div class="tm-role">Co-Owner · Developer</div></div></div>
+      <div class="tm"><div class="ph" style="background:#3a1a4a">🔮</div><div><div class="tm-name">Zenn</div><div class="tm-role">Helper</div></div></div>
+      <div class="tm"><div class="ph" style="background:#1a4a3a">🎨</div><div><div class="tm-name">Axouw</div><div class="tm-role">2D Artist</div></div></div>
+      <div class="tm"><div class="ph" style="background:#2a3a1a">🏗️</div><div><div class="tm-name">Rey</div><div class="tm-role">Builder · Helper</div></div></div>
+      <div class="tm"><div class="ph" style="background:#3a1a1a">📢</div><div><div class="tm-name">Nova</div><div class="tm-role">Admin Sosmed</div></div></div>
+      <div class="tm"><div class="ph" style="background:#1a1a3a">⚔️</div><div><div class="tm-name">Azazel</div><div class="tm-role">Admin Sosmed</div></div></div>
+      <div class="tm"><div class="ph" style="background:#3a2a0a">👕</div><div><div class="tm-name">vxfh_</div><div class="tm-role">Skin Designer</div></div></div>
+      <div class="tm"><div class="ph" style="background:#1a3a2a">✍️</div><div><div class="tm-name">Kiara</div><div class="tm-role">Script Writer</div></div></div>
+      <div class="tm"><div class="ph" style="background:#2a1a3a">🎭</div><div><div class="tm-name">Coji</div><div class="tm-role">Scripter · Skin Designer</div></div></div>
+    </div>
+  </div>
+
+  <!-- Mods -->
+  <div>
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#5c2d0a"></div>
+      <span class="sec-ttl">Mod Required</span>
+    </div>
+    <div class="mods-cols">
+      <div class="mc-bx mpanel">
+        <h4 style="color:#ff9060">⚠ Mod WAJIB</h4>
+        <div class="mod"><span class="mblt">►</span><div>EmoteCraft</div></div>
+        <div class="mod"><span class="mblt">►</span><div>Simple Voice Chat (Terbaru)<a class="mlink" href="https://modrinth.com/plugin/simple-voice-chat/versions?g=1.20.1&l=fabric" target="_blank">modrinth.com → Simple Voice Chat</a></div></div>
+        <div class="mod"><span class="mblt">►</span><div>AriKeys</div></div>
+      </div>
+      <div class="mc-bx mpanel">
+        <h4 style="color:#a0d060">✦ Mod Opsional</h4>
+        <div class="mod"><span class="mblt" style="color:#888">○</span>Xaeros Minimap</div>
+        <div class="mod"><span class="mblt" style="color:#888">○</span>Serious Player Animation</div>
+        <div class="mod"><span class="mblt" style="color:#888">○</span>Camera Overhaul</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspired by -->
+  <div class="mc-bx panel">
+    <div class="sec-hdr">
+      <div class="blk-ico" style="background:#6c3483"></div>
+      <span class="sec-ttl">Inspired By</span>
+    </div>
+    <div class="insp">
+      <span class="itag">TroubleMaker 1 &amp; 2</span>
+      <span class="itag">Wind Breaker S1 &amp; S2</span>
+      <span class="itag">Bakwan Fight Back 1–3</span>
+    </div>
+  </div>
+
+  <!-- SP Warning -->
+  <div class="sp-panel">
+    <div class="sp-ttl">⚠ Warning Letter (Surat Peringatan)</div>
+    <p>Jika pemain melebihi <b style="color:#ff3030">SP 5</b>, otomatis akan dikeluarkan dari grup.</p>
+  </div>
+
+  <!-- Join CTA -->
+  <div class="join-panel">
+    <h3>⚔ Join Server Sekarang!</h3>
+    <div class="join-info">
+      <div class="ic"><span class="lbl">Platform</span><span class="val">☕ Java Edition Only</span></div>
+      <div class="ic"><span class="lbl">Server IP</span><span class="val">📌 Cek di Discord</span></div>
+      <div class="ic"><span class="lbl">Version</span><span class="val">🎮 1.20.1 Fabric</span></div>
+    </div>
+    <br>
+    <a class="mc-btn" href="https://discord.gg/2wbYVENFu" target="_blank">💬 JOIN DISCORD</a>
+  </div>
+
+</main>
+
+<div class="dirt"></div>
+<footer>© Halcyon: Chase Your Dream — Minecraft Roleplay Server | Halcyon Universe</footer>
+
+</body>
+</html>
